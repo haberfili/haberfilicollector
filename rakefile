@@ -1,6 +1,4 @@
 desc "This task is called by the Heroku scheduler add-on"
-task :update_feed => 
-  puts "Updating feed..."
+task :update_feed => {
   Collector.run
-  puts "done."
-end
+}
