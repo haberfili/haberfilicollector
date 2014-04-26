@@ -19,16 +19,22 @@ public class CollectorJob {
 		for (FeedMessage message : feed.getMessages()) {
 			if (datasource.find(News.class)
 					.filter("link", message.getLink()).countAll() == 0) {
-				News news = new News();
-				news.title = message.getTitle();
-				news.image = message.getPicture();
-				news.link = message.getLink();
 				if(message.getDescription().contains(">")){
 					message.setDescription("");
 				}
 				if(message.getDescription().length()>150){
 					message.setDescription(message.getDescription().substring(0,150)+"...");
 				}
+				if(message.getDescription().contains("ADVERTORIAL")){
+					continue;
+				}
+				if("http://media.ntvmsnbc.com/j/NTVMSNBC/Components/ArtAndPhoto-Fronts/Sections-StoryLevel/Arsiv/140425-corridor.thumb.jpg".equals(message.getLink())){
+					message.setLink("");
+				}
+				News news = new News();
+				news.title = message.getTitle();
+				news.image = message.getPicture();
+				news.link = message.getLink();
 				news.detail = message.getDescription();
 				news.source=message.getSource();
 				news.createDate = System.currentTimeMillis();
