@@ -8,6 +8,7 @@ public class FeedMessage {
 	  String author;
 	  String guid;
 	  String picture;
+	  private String source;
 
 	  public String getTitle() {
 	    return title;
@@ -62,6 +63,14 @@ public class FeedMessage {
 
 	public void setPicture(String picture) {
 		this.picture = picture;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 }

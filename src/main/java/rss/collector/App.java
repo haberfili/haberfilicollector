@@ -1,13 +1,18 @@
 package rss.collector;
 
+import org.quartz.JobExecutionException;
+
+import rss.collector.Collector.NTVCollectorJob;
+
 /**
  * Hello world!
  *
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws JobExecutionException
     {
-        System.out.println( "Hello World!" );
+    	NTVCollectorJob job= new NTVCollectorJob();
+    	job.execute(null);
     }
 }

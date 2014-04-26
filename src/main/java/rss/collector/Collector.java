@@ -1,18 +1,16 @@
 package rss.collector;
 
-import models.News;
-import mongo.DBConnector;
-
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.repeatSecondlyForever;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-import com.google.code.morphia.Datastore;
+import org.quartz.Job;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.impl.StdSchedulerFactory;
 
 public class Collector {
 
@@ -22,48 +20,48 @@ public class Collector {
 
 	public static void main(String[] args) throws Exception {
 		Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-
 		scheduler.start();
 
-		JobDetail jobDetail = newJob(CollectorJob.class).build();
-
-		Trigger trigger = newTrigger().startNow()
+		JobDetail jobDetailNTV = newJob(NTVCollectorJob.class).build();
+		Trigger triggerNTV = newTrigger().startNow()
 				.withSchedule(repeatSecondlyForever(2)).build();
-
-		scheduler.scheduleJob(jobDetail, trigger);
+		scheduler.scheduleJob(jobDetailNTV, triggerNTV);
+		
+		JobDetail jobDetailRadikal = newJob(RadikalCollectorJob.class).build();
+		Trigger triggerRadikal= newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailRadikal, triggerRadikal);
+		
 	}
 
-	public static class CollectorJob implements Job {
+	public static class NTVCollectorJob implements Job {
 
 		@Override
 		public void execute(JobExecutionContext jobExecutionContext)
 				throws JobExecutionException {
 
-			RSSFeedParser parser = new RSSFeedParser(
+			NTVRSSFeedParser parser = new NTVRSSFeedParser(
 					"http://www.ntvmsnbc.com/id/3032091/device/rss/rss.xml");
-			Feed feed = parser.readFeed();
-			System.out.println(feed);
-			Datastore datasource = null;
-			try {
-				datasource = DBConnector.getDatasource();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			for (FeedMessage message : feed.getMessages()) {
-				if (datasource.find(News.class)
-						.filter("link", message.getLink()).countAll() == 0) {
-					News news = new News();
-					news.title = message.getTitle();
-					news.image = message.getPicture();
-					news.link = message.getLink();
-					news.detail = message.getDescription();
-					news.createDate = System.currentTimeMillis();
-					datasource.save(news);
-				}
-
-			}
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
 
 		}
+
+
+	}
+	public static class RadikalCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			RadikalRSSFeedParser parser = new RadikalRSSFeedParser(
+					"http://www.radikal.com.tr/d/rss/RssSD.xml");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+
+		}
+
+
 	}
 }
