@@ -36,10 +36,10 @@ public class Collector {
 				.withSchedule(repeatSecondlyForever(2)).build();
 		scheduler.scheduleJob(jobDetailRadikal, triggerRadikal);
 		
-		JobDetail jobDetailHurriyet = newJob(HurriyetCollectorJob.class).build();
-		Trigger triggerHurriyet= newTrigger().startNow()
-				.withSchedule(repeatSecondlyForever(2)).build();
-		scheduler.scheduleJob(jobDetailHurriyet, triggerHurriyet);
+//		JobDetail jobDetailHurriyet = newJob(HurriyetCollectorJob.class).build();
+//		Trigger triggerHurriyet= newTrigger().startNow()
+//				.withSchedule(repeatSecondlyForever(2)).build();
+//		scheduler.scheduleJob(jobDetailHurriyet, triggerHurriyet);
 		
 	}
 
