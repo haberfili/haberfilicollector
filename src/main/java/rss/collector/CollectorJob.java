@@ -25,7 +25,7 @@ public class CollectorJob {
 				if(message.getDescription().length()>150){
 					message.setDescription(message.getDescription().substring(0,150)+"...");
 				}
-				if(message.getDescription().contains("ADVERTORIAL")){
+				if(message.title.contains("Hürriyet ANASAYFA")){
 					continue;
 				}
 				if("http://media.ntvmsnbc.com/j/NTVMSNBC/Components/ArtAndPhoto-Fronts/Sections-StoryLevel/Arsiv/140425-corridor.thumb.jpg".equals(message.getLink())){

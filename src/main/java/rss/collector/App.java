@@ -2,7 +2,7 @@ package rss.collector;
 
 import org.quartz.JobExecutionException;
 
-import rss.collector.Collector.NTVCollectorJob;
+import rss.collector.Collector.HurriyetCollectorJob;
 
 /**
  * Hello world!
@@ -12,7 +12,7 @@ public class App
 {
     public static void main( String[] args ) throws JobExecutionException
     {
-    	NTVCollectorJob job= new NTVCollectorJob();
+    	HurriyetCollectorJob job= new HurriyetCollectorJob();
     	job.execute(null);
     }
 }
