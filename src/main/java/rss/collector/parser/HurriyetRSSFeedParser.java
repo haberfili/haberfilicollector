@@ -133,6 +133,34 @@ public class HurriyetRSSFeedParser implements RSSFeedParser{
 		            description=description.substring(description.indexOf("&gt;&lt;/a&gt;")+14);
 		            description=description.substring(0,description.indexOf("<"));
 	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }
 	            break;
 	          case LINK:
 	            link = getCharacterData(event, eventReader);
