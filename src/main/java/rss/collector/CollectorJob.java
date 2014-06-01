@@ -22,8 +22,9 @@ public class CollectorJob {
 				if(message.getDescription().contains(">")){
 					message.setDescription("");
 				}
-				if(message.getDescription().length()>150){
-					message.setDescription(message.getDescription().substring(0,150)+"...");
+				if(message.getDescription().length()>140){
+					message.setDescription(message.getDescription().substring(0,140)+"...");
+					message.setDescriptionMore(message.getDescription().substring(140));
 				}
 				if(message.title.contains("Hürriyet ANASAYFA")){
 					continue;
@@ -36,6 +37,7 @@ public class CollectorJob {
 				news.image = message.getPicture();
 				news.link = message.getLink();
 				news.detail = message.getDescription();
+				news.detailMore=message.getDescriptionMore();
 				news.source=message.getSource();
 				news.createDate = System.currentTimeMillis();
 				datasource.save(news);

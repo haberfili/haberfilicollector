@@ -77,6 +77,9 @@ public class HurriyetRSSFeedParser implements RSSFeedParser{
 	            break;
 	          case DESCRIPTION:
 	            description = getCharacterData(event, eventReader);
+	            if("TÜRKİYE'NİN AÇILIŞ SAYFASI".equals(description)){
+	            	continue;
+	            }
 	            event = eventReader.nextEvent();
 	            if (event instanceof Characters) {
 		            description= event.asCharacters().getData();

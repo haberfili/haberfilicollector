@@ -4,6 +4,7 @@ public class FeedMessage {
 
 	  String title;
 	  String description;
+	  String descriptionMore;
 	  String link;
 	  String author;
 	  String guid;
@@ -71,6 +72,14 @@ public class FeedMessage {
 
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	public String getDescriptionMore() {
+		return descriptionMore;
+	}
+
+	public void setDescriptionMore(String descriptionMore) {
+		this.descriptionMore = descriptionMore;
 	}
 
 }
