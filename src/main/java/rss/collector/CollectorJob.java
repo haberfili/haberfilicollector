@@ -23,8 +23,8 @@ public class CollectorJob {
 					message.setDescription("");
 				}
 				if(message.getDescription().length()>140){
-					message.setDescription(message.getDescription().substring(0,140)+"...");
 					message.setDescriptionMore(message.getDescription().substring(140));
+					message.setDescription(message.getDescription().substring(0,140)+"...");
 				}
 				if(message.title.contains("Hürriyet ANASAYFA")){
 					continue;
