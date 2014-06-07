@@ -111,6 +111,7 @@ public class NTVRSSFeedParser implements RSSFeedParser{
 	            message.setGuid(guid);
 	            message.setLink(link);
 	            message.setTitle(title);
+	            picture=picture.replace(".thumb.", ".hlarge.");
 	            message.setPicture(picture);
 	            message.setSource("ntvmsnbc.com");
 	            if(!"NTVMSNBC.com".equals(title)){
