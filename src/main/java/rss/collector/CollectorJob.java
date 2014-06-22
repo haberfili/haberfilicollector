@@ -39,6 +39,7 @@ public class CollectorJob {
 				news.detail = message.getDescription();
 				news.detailMore=message.getDescriptionMore();
 				news.source=message.getSource();
+				news.category=message.getCategory();
 				news.createDate = System.currentTimeMillis();
 				datasource.save(news);
 			}

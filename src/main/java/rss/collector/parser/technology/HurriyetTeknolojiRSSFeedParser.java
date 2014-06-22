@@ -1,4 +1,4 @@
-package rss.collector.parser;
+package rss.collector.parser.technology;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +11,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 
+import models.Category;
 import rss.collector.Feed;
 import rss.collector.FeedMessage;
 import rss.collector.RSSFeedParser;
 
-public class RadikalRSSFeedParser implements RSSFeedParser {
+public class HurriyetTeknolojiRSSFeedParser implements RSSFeedParser{
 	  static final String TITLE = "title";
 	  static final String DESCRIPTION = "description";
 	  static final String CHANNEL = "channel";
@@ -29,7 +30,7 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 
 	  final URL url;
 
-	  public RadikalRSSFeedParser(String feedUrl) {
+	  public HurriyetTeknolojiRSSFeedParser(String feedUrl) {
 	    try {
 	      this.url = new URL(feedUrl);
 	    } catch (MalformedURLException e) {
@@ -77,31 +78,92 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 	            break;
 	          case DESCRIPTION:
 	            description = getCharacterData(event, eventReader);
+	            if("TÜRKİYE'NİN AÇILIŞ SAYFASI".equals(description)){
+	            	continue;
+	            }
 	            event = eventReader.nextEvent();
 	            if (event instanceof Characters) {
-		            String result = event.asCharacters().getData();
-		            if(result.contains("description")){
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
 		            	break;
 		            }
-		            if(result.indexOf("src=")!=-1){
-		            	result=result.substring(result.indexOf("src=")+5);
-			            picture=result.substring(result.indexOf("http:"),result.indexOf("\""));
+		            description=description.substring(description.indexOf("http:"));
+	            }else{
+	            	continue;
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
 		            }
-		            event = eventReader.nextEvent();
-		            if(event instanceof Characters){
-			            result = event.asCharacters().getData();
-			            if(result.contains("description")){
-			            	break;
-			            }
+	            }else{
+	            	continue;
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
 		            }
-		            event = eventReader.nextEvent();
-		            if(event instanceof Characters){
-			            result = event.asCharacters().getData();
-			            if(result.contains("description")){
-			            	break;
-			            }
+	            }else{
+	            	continue;
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
 		            }
-		            description=result;
+		            if(description.indexOf("src=")!=-1){
+			            description=description.substring(description.indexOf("src=")+5);
+			            picture=description.substring(description.indexOf("http:"),description.indexOf("\""));
+		            }
+	            }else{
+	            	continue;
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }else{
+	            	continue;
+	            }
+	            if(description.indexOf("src=")!=-1){
+		            description=description.substring(description.indexOf("src=")+5);
+		            picture=description.substring(description.indexOf("http:"),description.indexOf("\""));
+		            description=description.substring(description.indexOf("&gt;&lt;/a&gt;")+14);
+		            description=description.substring(0,description.indexOf("<"));
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
+	            }
+	            event = eventReader.nextEvent();
+	            if (event instanceof Characters) {
+		            description= event.asCharacters().getData();
+		            if(description.contains("description")){
+		            	break;
+		            }
 	            }
 	            break;
 	          case LINK:
@@ -127,15 +189,20 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 	          if (event.asEndElement().getName().getLocalPart() == (ITEM)) {
 	            FeedMessage message = new FeedMessage();
 	            message.setAuthor(author);
+	            if(description.contains(">")){
+	            	description="";
+	            }
 	            message.setDescription(description);
 	            message.setGuid(guid);
 	            message.setLink(link);
 	            message.setTitle(title);
 	            message.setPicture(picture);
-	            message.setSource("radikal.com.tr");
-	            if(!"NTVMSNBC.com".equals(title)){
+	            message.setSource("hurriyet.com.tr");
+	            message.setCategory(Category.teknoloji.name());
+	            if(!"Hürriyet ANASAYFA".equals(title)){
 	            	feed.getMessages().add(message);
 	            }
+	            
 	            description = "";
 				title = "";
 				link = "";

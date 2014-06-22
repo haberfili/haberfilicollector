@@ -200,6 +200,16 @@ public class HurriyetRSSFeedParser implements RSSFeedParser{
 	            if(!"Hürriyet ANASAYFA".equals(title)){
 	            	feed.getMessages().add(message);
 	            }
+	            
+	            description = "";
+				title = "";
+				link = "";
+				language = "";
+				copyright = "";
+				author = "";
+				pubdate = "";
+				guid = "";
+				picture = "";
 	            event = eventReader.nextEvent();
 	            continue;
 	          }

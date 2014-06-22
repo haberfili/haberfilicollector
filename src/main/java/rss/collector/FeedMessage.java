@@ -10,6 +10,7 @@ public class FeedMessage {
 	  String guid;
 	  String picture;
 	  private String source;
+	  private String category;
 
 	  public String getTitle() {
 	    return title;
@@ -80,6 +81,14 @@ public class FeedMessage {
 
 	public void setDescriptionMore(String descriptionMore) {
 		this.descriptionMore = descriptionMore;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 }

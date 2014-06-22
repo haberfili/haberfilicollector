@@ -1,4 +1,4 @@
-package rss.collector.parser;
+package rss.collector.parser.sport;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +11,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 
+import models.Category;
 import rss.collector.Feed;
 import rss.collector.FeedMessage;
 import rss.collector.RSSFeedParser;
 
-public class RadikalRSSFeedParser implements RSSFeedParser {
+public class RadikalSporRSSFeedParser implements RSSFeedParser {
 	  static final String TITLE = "title";
 	  static final String DESCRIPTION = "description";
 	  static final String CHANNEL = "channel";
@@ -29,7 +30,7 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 
 	  final URL url;
 
-	  public RadikalRSSFeedParser(String feedUrl) {
+	  public RadikalSporRSSFeedParser(String feedUrl) {
 	    try {
 	      this.url = new URL(feedUrl);
 	    } catch (MalformedURLException e) {
@@ -133,6 +134,10 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 	            message.setTitle(title);
 	            message.setPicture(picture);
 	            message.setSource("radikal.com.tr");
+	            message.setCategory(Category.spor.name());
+	            
+	            
+	            
 	            if(!"NTVMSNBC.com".equals(title)){
 	            	feed.getMessages().add(message);
 	            }

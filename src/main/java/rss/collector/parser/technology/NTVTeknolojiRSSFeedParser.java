@@ -1,4 +1,4 @@
-package rss.collector.parser;
+package rss.collector.parser.technology;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +11,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 
+import models.Category;
 import rss.collector.Feed;
 import rss.collector.FeedMessage;
 import rss.collector.RSSFeedParser;
 
-public class RadikalRSSFeedParser implements RSSFeedParser {
+public class NTVTeknolojiRSSFeedParser implements RSSFeedParser{
 	  static final String TITLE = "title";
 	  static final String DESCRIPTION = "description";
 	  static final String CHANNEL = "channel";
@@ -29,7 +30,7 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 
 	  final URL url;
 
-	  public RadikalRSSFeedParser(String feedUrl) {
+	  public NTVTeknolojiRSSFeedParser(String feedUrl) {
 	    try {
 	      this.url = new URL(feedUrl);
 	    } catch (MalformedURLException e) {
@@ -77,31 +78,11 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 	            break;
 	          case DESCRIPTION:
 	            description = getCharacterData(event, eventReader);
-	            event = eventReader.nextEvent();
-	            if (event instanceof Characters) {
-		            String result = event.asCharacters().getData();
-		            if(result.contains("description")){
-		            	break;
-		            }
-		            if(result.indexOf("src=")!=-1){
-		            	result=result.substring(result.indexOf("src=")+5);
-			            picture=result.substring(result.indexOf("http:"),result.indexOf("\""));
-		            }
-		            event = eventReader.nextEvent();
-		            if(event instanceof Characters){
-			            result = event.asCharacters().getData();
-			            if(result.contains("description")){
-			            	break;
-			            }
-		            }
-		            event = eventReader.nextEvent();
-		            if(event instanceof Characters){
-			            result = event.asCharacters().getData();
-			            if(result.contains("description")){
-			            	break;
-			            }
-		            }
-		            description=result;
+	            if(description.indexOf("src=")!=-1){
+		            description=description.substring(description.indexOf("src=")+5);
+		            picture=description.substring(description.indexOf("http:"),description.indexOf("\""));
+		            description=description.substring(description.indexOf("a>")+2);
+		            description=description.substring(0,description.indexOf("<"));
 	            }
 	            break;
 	          case LINK:
@@ -131,11 +112,14 @@ public class RadikalRSSFeedParser implements RSSFeedParser {
 	            message.setGuid(guid);
 	            message.setLink(link);
 	            message.setTitle(title);
+	            picture=picture.replace(".thumb.", ".hlarge.");
 	            message.setPicture(picture);
-	            message.setSource("radikal.com.tr");
+	            message.setSource("ntvmsnbc.com");
+	            message.setCategory(Category.teknoloji.name());
 	            if(!"NTVMSNBC.com".equals(title)){
 	            	feed.getMessages().add(message);
 	            }
+	            
 	            description = "";
 				title = "";
 				link = "";

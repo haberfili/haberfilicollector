@@ -15,6 +15,11 @@ import org.quartz.impl.StdSchedulerFactory;
 import rss.collector.parser.HurriyetRSSFeedParser;
 import rss.collector.parser.NTVRSSFeedParser;
 import rss.collector.parser.RadikalRSSFeedParser;
+import rss.collector.parser.sport.HurriyetSporRSSFeedParser;
+import rss.collector.parser.sport.RadikalSporRSSFeedParser;
+import rss.collector.parser.technology.HurriyetTeknolojiRSSFeedParser;
+import rss.collector.parser.technology.NTVTeknolojiRSSFeedParser;
+import rss.collector.parser.technology.RadikalTeknolojiRSSFeedParser;
 
 public class Collector {
 
@@ -41,6 +46,30 @@ public class Collector {
 				.withSchedule(repeatSecondlyForever(2)).build();
 		scheduler.scheduleJob(jobDetailHurriyet, triggerHurriyet);
 		
+		JobDetail jobDetailRadikalSpor = newJob(RadikalSporCollectorJob.class).build();
+		Trigger triggerRadikalSpor= newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailRadikalSpor, triggerRadikalSpor);
+		
+		JobDetail jobDetailRadikalTeknoloji = newJob(RadikalTeknolojiCollectorJob.class).build();
+		Trigger triggerRadikalTeknoloji= newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailRadikalTeknoloji, triggerRadikalTeknoloji);
+		
+		JobDetail jobDetailNTVTeknoloji = newJob(NTVTeknolojiCollectorJob.class).build();
+		Trigger triggerNTVTeknoloji = newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailNTVTeknoloji, triggerNTVTeknoloji);
+		
+		JobDetail jobDetailHurriyetSpor = newJob(HurriyetSporCollectorJob.class).build();
+		Trigger triggerHurriyetSpor= newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailHurriyetSpor, triggerHurriyetSpor);
+		
+		JobDetail jobDetailHurriyetTeknoloji = newJob(HurriyetTeknolojiCollectorJob.class).build();
+		Trigger triggerHurriyetTeknoloji= newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailHurriyetTeknoloji, triggerHurriyetTeknoloji);
 	}
 
 	public static class NTVCollectorJob implements Job {
@@ -88,4 +117,84 @@ public class Collector {
 
 
 	}
+	
+	public static class RadikalSporCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			RadikalSporRSSFeedParser parser = new RadikalSporRSSFeedParser(
+					"http://www.radikal.com.tr/d/rss/Rss_84.xml");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+
+		}
+
+
+	}
+	
+	public static class RadikalTeknolojiCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			RadikalTeknolojiRSSFeedParser parser = new RadikalTeknolojiRSSFeedParser(
+					"http://www.radikal.com.tr/d/rss/Rss_117.xml");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+
+		}
+
+
+	}
+	public static class NTVTeknolojiCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			NTVTeknolojiRSSFeedParser parser = new NTVTeknolojiRSSFeedParser(
+					"http://www.ntvmsnbc.com/id/24927532/device/rss/rss.xml");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+
+		}
+
+
+	}
+	
+	public static class HurriyetSporCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			HurriyetSporRSSFeedParser parser = new HurriyetSporRSSFeedParser(
+					"http://rss.hurriyet.com.tr/rss.aspx?sectionId=14");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+
+		}
+
+
+	}
+	
+	public static class HurriyetTeknolojiCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			HurriyetTeknolojiRSSFeedParser parser = new HurriyetTeknolojiRSSFeedParser(
+					"http://rss.hurriyet.com.tr/rss.aspx?sectionId=2158");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+
+		}
+
+
+	}
+	
 }
