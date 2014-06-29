@@ -13,11 +13,14 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
 import rss.collector.parser.HurriyetRSSFeedParser;
+import rss.collector.parser.MynetRSSFeedParser;
 import rss.collector.parser.NTVRSSFeedParser;
 import rss.collector.parser.RadikalRSSFeedParser;
 import rss.collector.parser.sport.HurriyetSporRSSFeedParser;
+import rss.collector.parser.sport.MynetSporRSSFeedParser;
 import rss.collector.parser.sport.RadikalSporRSSFeedParser;
 import rss.collector.parser.technology.HurriyetTeknolojiRSSFeedParser;
+import rss.collector.parser.technology.MynetTeknolojiRSSFeedParser;
 import rss.collector.parser.technology.NTVTeknolojiRSSFeedParser;
 import rss.collector.parser.technology.RadikalTeknolojiRSSFeedParser;
 
@@ -70,6 +73,16 @@ public class Collector {
 		Trigger triggerHurriyetTeknoloji= newTrigger().startNow()
 				.withSchedule(repeatSecondlyForever(2)).build();
 		scheduler.scheduleJob(jobDetailHurriyetTeknoloji, triggerHurriyetTeknoloji);
+		
+		JobDetail jobDetailMynet= newJob(MynetCollectorJob.class).build();
+		Trigger triggerMynet= newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailMynet, triggerMynet);
+		
+		JobDetail jobDetailMynetTeknoloji= newJob(MynetTeknolojiCollectorJob.class).build();
+		Trigger triggerMynetTeknoloji= newTrigger().startNow()
+				.withSchedule(repeatSecondlyForever(2)).build();
+		scheduler.scheduleJob(jobDetailMynetTeknoloji, triggerMynetTeknoloji);
 	}
 
 	public static class NTVCollectorJob implements Job {
@@ -195,6 +208,44 @@ public class Collector {
 		}
 
 
+	}
+	
+	public static class MynetCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			MynetRSSFeedParser parser = new MynetRSSFeedParser(
+					"http://www.mynet.com/haber/rss/kategori/guncel");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+		}
+	}
+	public static class MynetSporCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			MynetSporRSSFeedParser parser = new MynetSporRSSFeedParser(
+					"http://spor.mynet.com/rss/");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+		}
+	}
+	
+	public static class MynetTeknolojiCollectorJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext jobExecutionContext)
+				throws JobExecutionException {
+
+			MynetTeknolojiRSSFeedParser parser = new MynetTeknolojiRSSFeedParser(
+					"http://www.mynet.com/haber/rss/kategori/teknoloji");
+			CollectorJob collectorJob= new CollectorJob();
+			collectorJob.parseFeed(parser);
+		}
 	}
 	
 }

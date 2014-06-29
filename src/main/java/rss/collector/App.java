@@ -2,12 +2,9 @@ package rss.collector;
 
 import org.quartz.JobExecutionException;
 
-import rss.collector.Collector.HurriyetSporCollectorJob;
-import rss.collector.Collector.HurriyetTeknolojiCollectorJob;
-import rss.collector.Collector.NTVTeknolojiCollectorJob;
-import rss.collector.Collector.RadikalSporCollectorJob;
-import rss.collector.Collector.RadikalTeknolojiCollectorJob;
-import rss.collector.parser.sport.HurriyetSporRSSFeedParser;
+import rss.collector.Collector.MynetCollectorJob;
+import rss.collector.Collector.MynetSporCollectorJob;
+import rss.collector.Collector.MynetTeknolojiCollectorJob;
 
 /**
  * Hello world!
@@ -17,7 +14,7 @@ public class App
 {
     public static void main( String[] args ) throws JobExecutionException
     {
-    	HurriyetTeknolojiCollectorJob job= new HurriyetTeknolojiCollectorJob();
+    	MynetSporCollectorJob job= new MynetSporCollectorJob();
     	job.execute(null);
     }
 }
