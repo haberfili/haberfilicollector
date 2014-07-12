@@ -43,6 +43,8 @@ public class CollectorJob {
 				news.category=message.getCategory();
 				news.createDate = System.currentTimeMillis();
 				datasource.save(news);
+				Runnable r= new SimilarNewsCaller(news.id.toString());
+				new Thread(r).start();
 			}
 
 		}

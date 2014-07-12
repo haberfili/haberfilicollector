@@ -16,5 +16,7 @@ public class App
     {
     	MynetSporCollectorJob job= new MynetSporCollectorJob();
     	job.execute(null);
+//    	Runnable r= new SimilarNewsCaller("53c1bd0284829717c2bbde32");
+//		new Thread(r).start();
     }
 }
