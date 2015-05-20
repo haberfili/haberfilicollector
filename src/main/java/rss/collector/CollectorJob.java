@@ -33,6 +33,12 @@ public class CollectorJob {
 				if("http://media.ntvmsnbc.com/j/NTVMSNBC/Components/ArtAndPhoto-Fronts/Sections-StoryLevel/Arsiv/140425-corridor.thumb.jpg".equals(message.getLink())){
 					message.setLink("");
 				}
+				if(message.getDescription()==null || message.getDescription().length()<15){
+					continue;
+				}
+				if(message.getTitle()==null || message.getTitle().length()<5){
+					continue;
+				}
 				News news = new News();
 				news.title = message.getTitle();
 				news.image = message.getPicture();
